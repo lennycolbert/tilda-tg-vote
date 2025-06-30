@@ -23,20 +23,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
             console.log('User ID:', userId, 'Voted for:', voteOption);
             
-            // --- СЮДА МЫ ПОЗЖЕ ДОБАВИМ ОТПРАВКУ ДАННЫХ НА СЕРВЕР ---
-            // Пока что просто показываем сообщение об успехе
-            
-            voteForm.style.display = 'none';
-            successMessage.style.display = 'block';
+            // ================================================================ //
+            //      ↓↓↓  ЭТО НОВЫЙ КОД, КОТОРЫЙ ОТПРАВЛЯЕТ ДАННЫЕ  ↓↓↓         //
+            //                                                                  //
+            const voteData = { userId, voteOption };
 
-            // Говорим Telegram, что можно показать кнопку "Закрыть"
-            tg.MainButton.setText('Голос учтён!');
-            tg.MainButton.show();
-            
-            // Через 3 секунды закрываем Web App
-            setTimeout(() => {
+            // Отправляем данные на наш серверный обработчик
+            fetch('/api/vote', { // Vercel поймет, что это нужно отправить на вашу serverless-функцию
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(voteData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Успех! Показываем сообщение и закрываемся
+                    voteForm.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    tg.MainButton.setText('Голос учтён!');
+                    tg.MainButton.show();
+                    setTimeout(() => tg.close(), 3000);
+                } else {
+                    // Ошибка (например, уже голосовал)
+                    alert(data.message || 'Произошла ошибка');
+                    tg.close(); // Закрываем в любом случае
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                alert('Не удалось отправить голос. Проверьте интернет-соединение.');
                 tg.close();
-            }, 3000);
+            });
+            //                                                                  //
+            //      ↑↑↑               КОНЕЦ НОВОГО КОДА                ↑↑↑    //
+            // ================================================================ //
         });
     });
 });
