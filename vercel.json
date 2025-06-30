@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/vote.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "vercel-edge"
     }
   }
 }
