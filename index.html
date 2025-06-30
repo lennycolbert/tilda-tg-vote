@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Голосование</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="vote-form">
+        <h1>За кого вы голосуете?</h1>
+        <p>Ваш выбор важен для нас!</p>
+        <button id="option1" class="vote-button">За вариант 1 👍</button>
+        <button id="option2" class="vote-button">За вариант 2 🚀</button>
+        <button id="option3" class="vote-button">За вариант 3 ❤️</button>
+    </div>
+    <div id="success-message" style="display: none;">
+        <h2>Спасибо!</h2>
+        <p>Ваш голос учтён. Можете закрыть это окно.</p>
+    </div>
+
+    <!-- Самый важный скрипт для связи с Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
